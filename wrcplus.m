@@ -35,7 +35,7 @@ function w = wrcplus(X, y, lambda)
         for j = 1:m1
             exact_s(:,j) = (norm(y-X*w_init))^2; %exact_s is exact sparsity
             
-            w_init(:,j) = r(i) + exact_s(:,j);
+            w_init(:,j) = r(i,p) + exact_s(:,j);
             if (w_init(:,j) < lambda)
                 
         end
