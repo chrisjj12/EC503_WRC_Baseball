@@ -23,21 +23,43 @@ function w = wrcplus(X, y, lambda)
     
     %converg_tol = 1e-4; % convergence tolerance
     I = eye(d1);
-    w_init = ((X.'*X + lambda*I)^-1) * (X.'*y); %initializing w
-    r = zeros(1,d);
-    exact_s = zeros(1,m);
+    A = X'*X + lambda*I;
+    B = X'*y;
+    w_init = A\eye(size(A))*B; %initializing w
+    wrc_w = zeros(m2,d2);
+    r = zeros(d1,1);
+    exact_s = zeros(1,m1);
     p = 1;
-    iter = 100; % iterations
+    w = [];
+    
     
     for i = 1:d1
         r(i) = lambda * norm(w_init,p); % r is regularizer
+        disp(r)
         
         for j = 1:m1
             exact_s(:,j) = (norm(y-X*w_init))^2; %exact_s is exact sparsity
             
-            w_init(:,j) = r(i,p) + exact_s(:,j);
-            if (w_init(:,j) < lambda)
-                
+            wrc_w(j,:) = r(i) + exact_s(:,j);
+  
         end
     end
+    
+    %squared loss
+    for a = 1:m1
+        if (y(j) - wrc_w(j,:)).^2/m1 > 1 %subject to change
+            wrc_w(j,:) = [];
+        end
+    end
+    w = wrc_w;
 end
+
+
+    
+ 
+    
+    
+    
+    
+    
+    
