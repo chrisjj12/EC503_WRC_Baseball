@@ -23,35 +23,36 @@ function w = wrcplus(X, y, lambda)
     
     %converg_tol = 1e-4; % convergence tolerance
     I = eye(d1);
+    %initial w (X'*X + lambda*I) * (X'*y)  
     A = X'*X + lambda*I;
     B = X'*y;
-    w_init = A\eye(size(A))*B; %initializing w
-    wrc_w = zeros(m2,d2);
+    w = pinv(A) * B; %initializing w, way of doing the inverse
+    %wrc_w = zeros(m2,d2);
     r = zeros(d1,1);
-    exact_s = zeros(1,m1);
+    least_sq = zeros(1,m1);
+    conv = 0; %converging limit
+    a = zeros(1,m1);
+    c = zeros(1,m1);
     p = 1;
     w = [];
     
-    
-    for i = 1:d1
-        r(i) = lambda * norm(w_init,p); % r is regularizer
-        disp(r)
-        
-        for j = 1:m1
-            exact_s(:,j) = (norm(y-X*w_init))^2; %exact_s is exact sparsity
+    while conv < 100  
+        for i = 1:d1
+            r(i) = lambda * norm(w,p); % r is regularizer
+            least_sq(:,i) = (norm(y-X*w))^2; %Least square 
+            obj(i,:) = r(i) + least_sq(:,i);
             
-            wrc_w(j,:) = r(i) + exact_s(:,j);
-  
+               
+            a(i) = 2*sum(X(i,:)'.^2);
+               
+            c(i) = 2*sum(X(i,:)*(y(i) - w'*X(i,:) + w(i,:)*X(i,:)));
+            
+            %soft thresholding
+            w(i,:) = sign(c(i),a(i)) * max((abs(c(i)/a(i)) - (lambda/a(i))),0);
         end
+        conv = conv + 1;
     end
     
-    %squared loss
-    for a = 1:m1
-        if (y(j) - wrc_w(j,:)).^2/m1 > 1 %subject to change
-            wrc_w(j,:) = [];
-        end
-    end
-    w = wrc_w;
 end
 
 
