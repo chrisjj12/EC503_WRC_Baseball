@@ -28,8 +28,8 @@ function w = wrcplus(X, y, lambda)
     %initial w (X'*X + lambda*I) * (X'*y)  
     A = X'*X + lambda*I;
     B = X'*y;
-    w = pinv(A) * B; %initializing w, way of doing the inverse
- 
+    %w = pinv(A) * B; %initializing w, way of doing the inverse
+    w = zeros(d1,1);
     
     
     %wrc_w = zeros(m2,d2);
@@ -78,7 +78,7 @@ function w = wrcplus(X, y, lambda)
         end
         r = lambda * norm(w,p); % r is regularizer
         least_sq = (norm(y-(X*w))).^2; %Least square 
-        obj =  (1/m1) * (r + least_sq);
+        obj =  r + least_sq;
         
         
         %objcheck = obj
