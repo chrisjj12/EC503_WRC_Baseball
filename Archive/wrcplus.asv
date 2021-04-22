@@ -1,6 +1,6 @@
 function w = wrcplus(X, y, lambda)
-    %{
-    %Normalizes the data
+    
+    %Normalizing the data
     m_X=mean(X);
     s_X=std(X);
 
@@ -14,7 +14,7 @@ function w = wrcplus(X, y, lambda)
     %mu_mat_y=repmat(m_y,size(y,1),1);
     s_mat_y=repmat(s_y,size(y,1),1);
     y=(y-m_y)./s_mat_y;
-    %}
+
 
     [m1, d1] = size(X);
     [m2, d2] = size(y);
@@ -41,8 +41,8 @@ function w = wrcplus(X, y, lambda)
     %initial w (X'*X + lambda*I) * (X'*y)  
     A = X'*X + lambda*I;
     B = X'*y;
-    %w = pinv(A) * B; %initializing w, way of doing the inverse
-    w = zeros(d1,1); %for error check
+    w = pinv(A) * B; %initializing w, way of doing the inverse
+    %w = zeros(d1,1); %for error check
     
     
     r = zeros(d1,1);
@@ -114,8 +114,7 @@ function w = wrcplus(X, y, lambda)
     end
     hold off;
     
-    h = 2* max(norm(X'*y),0);
-    disp(h)
+    
     %disp(obj_wo) %displays objective function
     %disp(sum(y.^2)) % displays the objective function when w = 0
 
