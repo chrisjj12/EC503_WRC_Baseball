@@ -1,5 +1,5 @@
-function w = wrcplus(X, y, lambda)
-    %{
+function [w, tr_err] = wrcplus(X, y, lambda)
+    
     %Normalizes the data
     m_X=mean(X);
     s_X=std(X);
@@ -14,7 +14,7 @@ function w = wrcplus(X, y, lambda)
     %mu_mat_y=repmat(m_y,size(y,1),1);
     s_mat_y=repmat(s_y,size(y,1),1);
     y=(y-m_y)./s_mat_y;
-    %}
+    
 
     [m1, d1] = size(X);
     [m2, d2] = size(y);
@@ -95,9 +95,9 @@ function w = wrcplus(X, y, lambda)
     end
     
 
-    [r,~] = size(loss);
-    [r2, ~] = size(loss2);
-
+    %[r,~] = size(loss);
+    %[r2, ~] = size(loss2);
+    %{
     figure(1)
     for i = 1:r
         plot(i,loss(i),'*');
@@ -113,9 +113,8 @@ function w = wrcplus(X, y, lambda)
         hold on;
     end
     hold off;
-    
-    h = 2* max(norm(X'*y),0);
-    disp(h)
+    %}
+    %tr_err = (1/m1)*sum((X*w - y).^2);
     %disp(obj_wo) %displays objective function
     %disp(sum(y.^2)) % displays the objective function when w = 0
 
